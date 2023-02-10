@@ -18,5 +18,6 @@ class ModelConfig:
 class TrainConfig:
     nb_epochs: int
     batch_size: int
+    learning_rate: float
     model_output_path: str
     logdir: str

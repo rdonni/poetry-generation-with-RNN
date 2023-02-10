@@ -1,10 +1,14 @@
 #!/usr/bin/env python3
 
 import tensorflow as tf
-
+import numpy as np
 from build_model import TextGenerationModel
 from config import DatasetCreationConfig, ModelConfig, TrainConfig
 from dataset_creation import build_training_dataset
+import wandb
+from wandb.keras import WandbCallback
+
+wandb.init(project="poetry-generation-with-RNN")
 
 
 def train(dataset_config: DatasetCreationConfig,
@@ -17,9 +21,9 @@ def train(dataset_config: DatasetCreationConfig,
     print('Dataset Created')
     model = TextGenerationModel(total_nb_words, embedding_dim=model_config.embedding_dim)
     model.compile(loss=tf.keras.losses.CategoricalCrossentropy(),
-                  optimizer=tf.keras.optimizers.Adam(learning_rate=0.001),
+                  optimizer=tf.keras.optimizers.Adam(learning_rate=train_config.learning_rate),
                   metrics=['accuracy'])
-    model.build((None, 1))
+    model(np.array([input_sequence[0]]))
     model.summary()
 
     model.fit(input_sequence,
@@ -34,24 +38,36 @@ def train(dataset_config: DatasetCreationConfig,
                              monitor='loss',
                              mode='min',
                              save_freq='epoch',
-                             verbose=1)
+                             verbose=1),
+                         WandbCallback()
+
                          ])
 
 
-dataset_config = DatasetCreationConfig(
+dataset_config_ = DatasetCreationConfig(
     poems_dataset_path='/Users/rayanedonni/Documents/Projets_persos/poetry_creation/PoetryFoundationData.csv',
     sequence_size=32,
     char_level_tokenizing=False,
     tokenizer_saving_path='/Users/rayanedonni/Documents/Projets_persos/poetry_creation/tokenizer.json'
 )
-model_config = ModelConfig(
+model_config_ = ModelConfig(
     embedding_dim=8
 )
-train_config = TrainConfig(
-    nb_epochs=50,
-    batch_size=32,
+train_config_ = TrainConfig(
+    nb_epochs=200,
+    learning_rate=0.001,
+    batch_size=128,
     model_output_path='/Users/rayanedonni/Documents/Projets_persos/poetry_creation/model',
     logdir='/Users/rayanedonni/Documents/Projets_persos/poetry_creation/logs'
 )
 
-train(dataset_config, model_config, train_config)
+wandb.config = {
+    "char_level_tokenizing": dataset_config_.char_level_tokenizing,
+    "sequence_size": dataset_config_.sequence_size,
+    "embedding_dim": model_config_.embedding_dim,
+    "learning_rate": train_config_.learning_rate,
+    "epochs": train_config_.nb_epochs,
+    "batch_size": train_config_.batch_size,
+}
+
+train(dataset_config_, model_config_, train_config_)

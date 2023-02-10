@@ -17,7 +17,6 @@ def generate(model_path, tokenizer_path, prompt_text, nb_words):
     for _ in range(nb_words):
         tokenized_prompt = tokenizer.texts_to_sequences([prompt_text])[0]
         padded_prompt = pad_sequences([tokenized_prompt], 32)
-        print(padded_prompt)
         model_pred = model(padded_prompt)
         id_pred = np.argmax(model_pred, axis=1)
         pred = tokenizer.sequences_to_texts([id_pred])[0]

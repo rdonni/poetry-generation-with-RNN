@@ -10,7 +10,7 @@ def build_training_dataset(
         char_level_tokenizing: bool,
         tokenizer_saving_path: str
 ):
-    df = pd.read_csv(poem_dataset_path, nrows=10)
+    df = pd.read_csv(poem_dataset_path, nrows=500)
     poems_array = poems_df_to_poems_array(df)
     preprocessed_sequences = split_poems_into_sequences(poems_array)
 
@@ -70,7 +70,6 @@ def build_tokenizer(text_sequences, tokenizer_saving_path, char_level):
     tokenizer.fit_on_texts(text_sequences)
 
     tokenizer_json = tokenizer.to_json()
-    print(tokenizer_json)
     with open(tokenizer_saving_path, "w") as outfile:
         outfile.write(tokenizer_json)
     return tokenizer
