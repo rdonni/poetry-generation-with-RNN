@@ -1,3 +1,8 @@
+poetry_generation_with_RNN/.DS_Store/
+.DS_Store/
+.idea/
+poetry_generation_with_RNN/wandb/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
