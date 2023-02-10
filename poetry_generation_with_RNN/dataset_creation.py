@@ -10,7 +10,7 @@ def build_training_dataset(
         char_level_tokenizing: bool,
         tokenizer_saving_path: str
 ):
-    df = pd.read_csv(poem_dataset_path, nrows=500)
+    df = pd.read_csv(poem_dataset_path, nrows=10)
     poems_array = poems_df_to_poems_array(df)
     preprocessed_sequences = split_poems_into_sequences(poems_array)
 

@@ -25,10 +25,10 @@ def generate(model_path, tokenizer_path, prompt_text, nb_words):
     return prompt_text
 
 
-model_path = '/Users/rayanedonni/Documents/Projets_persos/poetry_creation/model'
-tokenizer_path = '/Users/rayanedonni/Documents/Projets_persos/poetry_creation/tokenizer.json'
-prompt_text = 'The little boy'
-nb_words = 20
+model_path_ = '/Users/rayanedonni/Documents/Projets_persos/poetry_creation/model'
+tokenizer_path_ = '/Users/rayanedonni/Documents/Projets_persos/poetry_creation/tokenizer.json'
+prompt_text_ = 'The little boy'
+nb_words_ = 20
 
-generated_text = generate(model_path, tokenizer_path, prompt_text, nb_words)
+generated_text = generate(model_path_, tokenizer_path_, prompt_text_, nb_words_)
 print(generated_text)

@@ -9,7 +9,7 @@ import wandb
 from wandb.keras import WandbCallback
 
 wandb.init(project="poetry-generation-with-RNN")
-
+wandb.run.name = 'test-run'
 
 def train(dataset_config: DatasetCreationConfig,
           model_config: ModelConfig,
@@ -54,7 +54,7 @@ model_config_ = ModelConfig(
     embedding_dim=8
 )
 train_config_ = TrainConfig(
-    nb_epochs=200,
+    nb_epochs=10,
     learning_rate=0.001,
     batch_size=128,
     model_output_path='/Users/rayanedonni/Documents/Projets_persos/poetry_creation/model',
