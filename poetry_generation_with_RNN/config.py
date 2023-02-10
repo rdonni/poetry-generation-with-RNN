@@ -4,9 +4,10 @@ from dataclasses import dataclass
 @dataclass
 class DatasetCreationConfig:
     poems_dataset_path: str
+    num_poems: int
     sequence_size: int
     char_level_tokenizing: bool
-    tokenizer_saving_path: str
+    tokenizer_output_path: str
 
 
 @dataclass

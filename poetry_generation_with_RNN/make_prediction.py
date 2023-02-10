@@ -4,7 +4,7 @@ import tensorflow as tf
 import numpy as np
 import json
 
-from dataset_creation import pad_sequences
+from poetry_generation_with_RNN.dataset_creation import pad_sequences
 
 
 def generate(model_path, tokenizer_path, prompt_text, nb_words):
@@ -13,7 +13,7 @@ def generate(model_path, tokenizer_path, prompt_text, nb_words):
     json_str = json.dumps(tokenizer_json)
     tokenizer = tf.keras.preprocessing.text.tokenizer_from_json(json_str)
     model = tf.keras.models.load_model(model_path)
-
+    print(f'Input text: {prompt_text}')
     for _ in range(nb_words):
         tokenized_prompt = tokenizer.texts_to_sequences([prompt_text])[0]
         padded_prompt = pad_sequences([tokenized_prompt], 32)
@@ -21,14 +21,15 @@ def generate(model_path, tokenizer_path, prompt_text, nb_words):
         id_pred = np.argmax(model_pred, axis=1)
         pred = tokenizer.sequences_to_texts([id_pred])[0]
         prompt_text = prompt_text + f" {pred} "
-
+    print(f'Generated text: {prompt_text}')
     return prompt_text
 
 
-model_path_ = '/Users/rayanedonni/Documents/Projets_persos/poetry_creation/model'
-tokenizer_path_ = '/Users/rayanedonni/Documents/Projets_persos/poetry_creation/tokenizer.json'
-prompt_text_ = 'The little boy'
-nb_words_ = 20
+if __name__ == '__main__':
+    model_path_ = '/Users/rayanedonni/Documents/Projets_persos/poetry_creation/model'
+    tokenizer_path_ = '/Users/rayanedonni/Documents/Projets_persos/poetry_creation/tokenizer.json'
+    prompt_text_ = 'The little boy'
+    nb_words_ = 20
 
-generated_text = generate(model_path_, tokenizer_path_, prompt_text_, nb_words_)
-print(generated_text)
+    generated_text = generate(model_path_, tokenizer_path_, prompt_text_, nb_words_)
+    print(generated_text)

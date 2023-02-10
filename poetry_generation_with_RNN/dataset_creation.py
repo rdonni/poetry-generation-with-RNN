@@ -6,15 +6,16 @@ from typing import List
 
 def build_training_dataset(
         poem_dataset_path: str,
+        num_poems: int,
         sequence_size: int,
         char_level_tokenizing: bool,
-        tokenizer_saving_path: str
+        tokenizer_output_path: str
 ):
-    df = pd.read_csv(poem_dataset_path, nrows=10)
+    df = pd.read_csv(poem_dataset_path, nrows=num_poems)
     poems_array = poems_df_to_poems_array(df)
     preprocessed_sequences = split_poems_into_sequences(poems_array)
 
-    tokenizer = build_tokenizer(preprocessed_sequences, tokenizer_saving_path, char_level_tokenizing)
+    tokenizer = build_tokenizer(preprocessed_sequences, tokenizer_output_path, char_level_tokenizing)
     total_nb_words = len(tokenizer.word_index) + 1
 
     input_sequence, label = sequences_to_training_data(preprocessed_sequences, tokenizer, sequence_size)
